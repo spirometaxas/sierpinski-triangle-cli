@@ -1,6 +1,6 @@
 {
   "name": "sierpinski-triangle-cli",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Print the Sierpinski Triangle to the console!",
   "main": "./src/index.js",
   "bin": {
@@ -18,5 +18,15 @@
   },
   "author": "Spiro Metaxas",
   "license": "MIT",
-  "keywords": [ "Sierpinski", "Sierpinski Triangle", "fractals", "sierpinski-triangle-cli", "console", "unicode" ]
+  "keywords": [ 
+    "Sierpinski", 
+    "Sierpinski Triangle", 
+    "fractals", 
+    "sierpinski-triangle-cli", 
+    "cli",
+    "console",
+    "terminal",
+    "shell",
+    "unicode" 
+  ]
 }
