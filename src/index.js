@@ -1,12 +1,12 @@
 const getWidth = function(n) {
-  return Math.pow(2, n) - 1;
+  return Math.pow(2, n + 1) - 1;
 }
 
 const getHeight = function(n) {
-  if (n === 0) {
+  if (n < 0) {
     return 0;
   }
-  return Math.pow(2, n - 1);
+  return Math.pow(2, n);
 }
 
 const createBoard = function(w, h) {
@@ -40,7 +40,7 @@ const drawTriangle = function(board, pos, scale) {
 }
 
 const sierpinski = function(n, scale, board, pos) {
-  if (n === 1) {
+  if (n === 0) {
     drawTriangle(board, pos, scale);
     return;
   }
@@ -61,12 +61,13 @@ const draw = function(board) {
 }
 
 const create = function(n, scale) {
-  if (!n || n < 1) {
+  if (n === undefined || n < 0) {
     return '';
   }
-  if (!scale || scale < n) {
+  if (scale === undefined || scale < n) {
     scale = n;
   }
+
   const board = createBoard(getWidth(scale), getHeight(scale));
   sierpinski(n, scale, board, { x: parseInt(getWidth(scale) / 2.0), y: 0 });
   return draw(board);
