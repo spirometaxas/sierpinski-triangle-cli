@@ -1,6 +1,6 @@
 {
   "name": "sierpinski-triangle-cli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Print the Sierpinski Triangle to the console!",
   "main": "./src/index.js",
   "bin": {
