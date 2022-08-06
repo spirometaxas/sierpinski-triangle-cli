@@ -3,7 +3,7 @@ Print the [Sierpinski Triangle](https://en.wikipedia.org/wiki/Sierpi%C5%84ski_tr
 
 ![What sierpinski-triangle-cli prints to the console](https://raw.githubusercontent.com/spirometaxas/sierpinski-triangle-cli/main/img/sierpinski-triangle-6.png)
 
-Why the console?  Because it's the *cool* way.
+Why the console?  Because it's the *cool* way.  [See All Fractals](https://spirometaxas.com/projects/fractals-cli)
 
 ## Usage
 ### Via `npx`:
@@ -26,8 +26,10 @@ $ npm install sierpinski-triangle-cli
 then:
 ```
 const sierpinski = require('sierpinski-triangle-cli');
+console.log(sierpinski.create(<n>));
 console.log(sierpinski.create(<n>, { size: <number>, inverse: <boolean>, character: <character> }));
 ```
+The config params are optional.
 
 ## Options
 ### Recursive Step  

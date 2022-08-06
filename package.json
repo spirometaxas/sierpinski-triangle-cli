@@ -13,10 +13,14 @@
     "type": "git",
     "url": "https://github.com/spirometaxas/sierpinski-triangle-cli.git"
   },
+  "homepage": "https://spirometaxas.com/projects/fractals-cli",
   "scripts": {
     "cli": "node ./src/cli.js"
   },
-  "author": "Spiro Metaxas",
+  "author": {
+    "name" : "Spiro Metaxas",
+    "url" : "https://spirometaxas.com"
+  },
   "license": "MIT",
   "keywords": [ 
     "Sierpinski", 
