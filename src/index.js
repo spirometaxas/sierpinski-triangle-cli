@@ -21,16 +21,20 @@ const createBoard = function(w, h) {
   return board;
 }
 
-const drawTriangle = function(board, pos, scale) {
+const drawTriangle = function(board, pos, scale, character) {
   var curW = getWidth(scale);
   var startX = pos.x - parseInt(getWidth(scale) / 2.0);
   var curY = pos.y;
   for (let i = 0; i < getHeight(scale); i++) {
     for (let j = 0; j < curW; j++) {
-      if (j % 2 === 0) {
-        board[curY][startX + j] = '▲';
+      if (character) {
+        board[curY][startX + j] = character;
       } else {
-        board[curY][startX + j] = '▼';
+        if (j % 2 === 0) {
+          board[curY][startX + j] = '▲';
+        } else {
+          board[curY][startX + j] = '▼';
+        }
       }
     }
     curW -= 2;
@@ -39,14 +43,41 @@ const drawTriangle = function(board, pos, scale) {
   }
 }
 
-const sierpinski = function(n, scale, board, pos) {
-  if (n === 0) {
-    drawTriangle(board, pos, scale);
-    return;
+const drawInverseTriangle = function(board, pos, scale, character) {
+  var curW = 1;
+  var startX = pos.x;
+  var curY = pos.y;
+  for (let i = 0; i < getHeight(scale); i++) {
+    for (let j = 0; j < curW; j++) {
+      if (character) {
+        board[curY][startX + j] = character;
+      } else {
+        if (j % 2 === 0) {
+          board[curY][startX + j] = '▼';
+        } else {
+          board[curY][startX + j] = '▲';
+        }
+      }
+    }
+    curW += 2;
+    startX -= 1;
+    curY += 1;
   }
-  sierpinski(n - 1, scale - 1, board, { x: pos.x - getWidth(scale - 2) - 1, y: pos.y });
-  sierpinski(n - 1, scale - 1, board, { x: pos.x + getWidth(scale - 2) + 1, y: pos.y });
-  sierpinski(n - 1, scale - 1, board, { x: pos.x, y: pos.y + getHeight(scale - 1) });
+}
+
+const sierpinski = function(n, scale, board, pos, inverse=false, character) {
+  if (n === 0) {
+    if (!inverse) {
+      drawTriangle(board, pos, scale, character);
+    }
+    return;
+  } else if (n > 0 && inverse) {
+    drawInverseTriangle(board, pos, scale - 1, character);
+  }
+
+  sierpinski(n - 1, scale - 1, board, { x: pos.x - getWidth(scale - 2) - 1, y: pos.y }, inverse, character);
+  sierpinski(n - 1, scale - 1, board, { x: pos.x + getWidth(scale - 2) + 1, y: pos.y }, inverse, character);
+  sierpinski(n - 1, scale - 1, board, { x: pos.x, y: pos.y + getHeight(scale - 1) }, inverse, character);
 }
 
 const draw = function(board) {
@@ -60,16 +91,21 @@ const draw = function(board) {
   return result;
 }
 
-const create = function(n, scale) {
+const create = function(n, config) {
   if (n === undefined || n < 0) {
     return '';
   }
-  if (scale === undefined || scale < n) {
-    scale = n;
+
+  let scale = n;
+  if (config && config.scale && config.scale > n) {
+    scale = config.scale;
   }
 
+  const inverse = config !== undefined && config.inverse === true;
+  const character = config !== undefined && config.character !== undefined && config.character.length === 1 ? config.character : undefined;
+
   const board = createBoard(getWidth(scale), getHeight(scale));
-  sierpinski(n, scale, board, { x: parseInt(getWidth(scale) / 2.0), y: 0 });
+  sierpinski(n, scale, board, { x: parseInt(getWidth(scale) / 2.0), y: 0 }, inverse, character);
   return draw(board);
 }
 
