@@ -53,7 +53,7 @@ $ sierpinski-triangle-cli 5
 ```
 $ sierpinski-triangle-cli <n> <size>
 ```
-The optional `<size>` param allows the triangle to be drawn at larger sizes.  `<size>` should be an integer greater than or equal to `<n>`.  Including size will draw a triangle of `<n>` recursive steps the size of a triangle with `<size>` recursive steps.  
+The optional `<size>` param allows the Sierpinski Triangle to be drawn at larger sizes.  `<size>` should be an integer greater than or equal to `<n>`.  Including size will draw a Sierpinski Triangle of `<n>` recursive steps the size of a triangle with `<size>` recursive steps.  
 
 #### Example:
 ```
@@ -73,7 +73,7 @@ $ sierpinski-triangle-cli 3 5 --inverse
 ```
 ![What sierpinski-triangle-cli prints to the console](https://raw.githubusercontent.com/spirometaxas/sierpinski-triangle-cli/main/img/sierpinski-triangle-3-5-inverse.png)
 
-### Custon Characters
+### Custom Characters
 ```
 $ sierpinski-triangle-cli <n> <size> --character=<character>
 ```
