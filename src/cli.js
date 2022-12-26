@@ -11,11 +11,12 @@ const printUsage = function(showIntro) {
                 '   $ sierpinski-triangle-cli <n>\n' + 
                 '   $ sierpinski-triangle-cli <n> <size>\n' + 
                 '\n' + 
-                '   <n> is the recursive step, a number greater than or equal to 1\n' + 
+                '   <n> is the recursive step, a number greater than or equal to 0\n' + 
                 '   <size> is the size to draw, a number greater than or equal to <n>\n' + 
                 '\n' +
                 ' Options:\n' + 
                 '   --inverse, -i            Draw the inverse Sierpinski Triangle\n' + 
+                '   --rotate=<rotate>        Rotate the Sierpinski Triangle: [flip|standard]\n' +
                 '   --character=<character>  Draw using 1 specific character\n');
 }
 
@@ -50,6 +51,24 @@ const drawInverse = function(flags) {
         }
     }
     return false;
+}
+
+const getRotation = function(flags) {
+    for (let i = 0; i < flags.length; i++) {
+        if (flags[i] && flags[i].toLowerCase().startsWith('--rotate=')) {
+            const line = flags[i].substring(9);
+            if (line) {
+                if (line.toLowerCase() === 'flip' || line.toLowerCase() === 'standard') {
+                    return line.toLowerCase();
+                } else {
+                    console.log('\n Warning: Please provide a supported rotation type: [flip|standard]');
+                }
+            } else {
+                console.log('\n Warning: Please provide a supported rotation type: [flip|standard]');
+            }
+        }
+    }
+    return undefined;
 }
 
 const getCharacter = function(flags) {
@@ -89,7 +108,7 @@ if (process.argv.length > 2) {
         }
 
         if (n !== undefined && s !== undefined) {
-            console.log(sierpinski.create(n, { size: s, inverse: drawInverse(flags), character: getCharacter(flags) }));
+            console.log(sierpinski.create(n, { size: s, inverse: drawInverse(flags), rotate: getRotation(flags), character: getCharacter(flags) }));
         }
     } else {
         console.log('\n <n> should be a number greater than or equal to 0');

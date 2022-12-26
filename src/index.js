@@ -21,6 +21,10 @@ const createBoard = function(w, h) {
   return board;
 }
 
+const isValidRotation = function(rotation) {
+  return rotation !== undefined && (rotation.toLowerCase() === 'flip' || rotation.toLowerCase() === 'standard');
+}
+
 const drawTriangle = function(board, pos, size, character) {
   var curW = getWidth(size);
   var startX = pos.x - parseInt(getWidth(size) / 2.0);
@@ -80,6 +84,21 @@ const sierpinski = function(n, size, board, pos, inverse=false, character) {
   sierpinski(n - 1, size - 1, board, { x: pos.x, y: pos.y + getHeight(size - 1) }, inverse, character);
 }
 
+const sierpinskiFlip = function(n, size, board, pos, inverse=false, character) {
+  if (n === 0) {
+    if (!inverse) {
+      drawInverseTriangle(board, { x: pos.x, y: pos.y - getHeight(size) + 1 }, size, character);
+    }
+    return;
+  } else if (n > 0 && inverse) {
+    drawTriangle(board, { x: pos.x, y: pos.y - getHeight(size - 1) + 1 }, size - 1, character);
+  }
+
+  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x - getWidth(size - 2) - 1, y: pos.y }, inverse, character);
+  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x + getWidth(size - 2) + 1, y: pos.y }, inverse, character);
+  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x, y: pos.y - getHeight(size - 1) }, inverse, character);
+}
+
 const draw = function(board) {
   var result = '\n ';
   for (let i = 0; i < board.length; i++) {
@@ -102,10 +121,16 @@ const create = function(n, config) {
   }
 
   const inverse = config !== undefined && config.inverse === true;
+  const rotate = config !== undefined && isValidRotation(config.rotate) ? config.rotate.toLowerCase() : 'standard';
   const character = config !== undefined && config.character !== undefined && config.character.length === 1 ? config.character : undefined;
 
   const board = createBoard(getWidth(size), getHeight(size));
-  sierpinski(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
+  if (rotate.toLowerCase() === 'flip') {
+    sierpinskiFlip(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: getHeight(size) - 1 }, inverse, character);
+  } else {
+    sierpinski(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
+  }
+  
   return draw(board);
 }
 
