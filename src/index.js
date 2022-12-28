@@ -69,7 +69,7 @@ const drawInverseTriangle = function(board, pos, size, character) {
   }
 }
 
-const sierpinski = function(n, size, board, pos, inverse=false, character) {
+const sierpinskiS = function(n, size, board, pos, inverse=false, character) {
   if (n === 0) {
     if (!inverse) {
       drawTriangle(board, pos, size, character);
@@ -79,12 +79,12 @@ const sierpinski = function(n, size, board, pos, inverse=false, character) {
     drawInverseTriangle(board, pos, size - 1, character);
   }
 
-  sierpinski(n - 1, size - 1, board, { x: pos.x - getWidth(size - 2) - 1, y: pos.y }, inverse, character);
-  sierpinski(n - 1, size - 1, board, { x: pos.x + getWidth(size - 2) + 1, y: pos.y }, inverse, character);
-  sierpinski(n - 1, size - 1, board, { x: pos.x, y: pos.y + getHeight(size - 1) }, inverse, character);
+  sierpinskiS(n - 1, size - 1, board, { x: pos.x - getWidth(size - 2) - 1, y: pos.y }, inverse, character);
+  sierpinskiS(n - 1, size - 1, board, { x: pos.x + getWidth(size - 2) + 1, y: pos.y }, inverse, character);
+  sierpinskiS(n - 1, size - 1, board, { x: pos.x, y: pos.y + getHeight(size - 1) }, inverse, character);
 }
 
-const sierpinskiFlip = function(n, size, board, pos, inverse=false, character) {
+const sierpinskiF = function(n, size, board, pos, inverse=false, character) {
   if (n === 0) {
     if (!inverse) {
       drawInverseTriangle(board, { x: pos.x, y: pos.y - getHeight(size) + 1 }, size, character);
@@ -94,9 +94,17 @@ const sierpinskiFlip = function(n, size, board, pos, inverse=false, character) {
     drawTriangle(board, { x: pos.x, y: pos.y - getHeight(size - 1) + 1 }, size - 1, character);
   }
 
-  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x - getWidth(size - 2) - 1, y: pos.y }, inverse, character);
-  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x + getWidth(size - 2) + 1, y: pos.y }, inverse, character);
-  sierpinskiFlip(n - 1, size - 1, board, { x: pos.x, y: pos.y - getHeight(size - 1) }, inverse, character);
+  sierpinskiF(n - 1, size - 1, board, { x: pos.x - getWidth(size - 2) - 1, y: pos.y }, inverse, character);
+  sierpinskiF(n - 1, size - 1, board, { x: pos.x + getWidth(size - 2) + 1, y: pos.y }, inverse, character);
+  sierpinskiF(n - 1, size - 1, board, { x: pos.x, y: pos.y - getHeight(size - 1) }, inverse, character);
+}
+
+const sierpinski = function(n, size, board, rotate, inverse=false, character) {
+  if (rotate.toLowerCase() === 'flip') {
+    sierpinskiF(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: getHeight(size) - 1 }, inverse, character);
+  } else {
+    sierpinskiS(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
+  }
 }
 
 const draw = function(board) {
@@ -125,11 +133,12 @@ const create = function(n, config) {
   const character = config !== undefined && config.character !== undefined && config.character.length === 1 ? config.character : undefined;
 
   const board = createBoard(getWidth(size), getHeight(size));
-  if (rotate.toLowerCase() === 'flip') {
-    sierpinskiFlip(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: getHeight(size) - 1 }, inverse, character);
-  } else {
-    sierpinski(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
-  }
+  // if (rotate.toLowerCase() === 'flip') {
+  //   sierpinskiFlip(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: getHeight(size) - 1 }, inverse, character);
+  // } else {
+  //   sierpinski(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
+  // }
+  sierpinski(n, size, board, rotate, inverse, character);
   
   return draw(board);
 }
