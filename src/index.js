@@ -133,11 +133,6 @@ const create = function(n, config) {
   const character = config !== undefined && config.character !== undefined && config.character.length === 1 ? config.character : undefined;
 
   const board = createBoard(getWidth(size), getHeight(size));
-  // if (rotate.toLowerCase() === 'flip') {
-  //   sierpinskiFlip(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: getHeight(size) - 1 }, inverse, character);
-  // } else {
-  //   sierpinski(n, size, board, { x: parseInt(getWidth(size) / 2.0), y: 0 }, inverse, character);
-  // }
   sierpinski(n, size, board, rotate, inverse, character);
   
   return draw(board);
