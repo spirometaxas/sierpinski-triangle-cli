@@ -139,5 +139,5 @@ const create = function(n, config) {
 }
 
 module.exports = {
-  create: create
+  create: create,
 };
